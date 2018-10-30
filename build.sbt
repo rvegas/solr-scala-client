@@ -1,36 +1,58 @@
 name := "solr-scala-client"
 
-organization := "jp.sf.amateras.solr.scala"
+organization := "com.github.takezoe"
 
-version := "0.0.12"
+version := "0.0.19"
 
-crossScalaVersions := Seq("2.10.3", "2.11.1")
+scalaVersion := "2.12.7"
 
 scalacOptions += "-feature"
 
-resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/"
+crossScalaVersions := Seq("2.11.12", "2.12.7", "2.13.0-M5")
 
-resolvers += "Local Maven Repository" at "file:///"+Path.userHome.absolutePath+"/.m2/repository"
+resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
-  "org.apache.solr" % "solr-solrj" % "4.5.1" % "compile",
-  "com.ning" % "async-http-client" % "1.7.16" % "compile",
-  "org.scalatest" %% "scalatest" % "2.1.6" % "test",
-  "org.mockito" % "mockito-core" % "1.9.0" % "test",
-  "commons-logging" % "commons-logging" % "1.1.3" % "runtime"
+  "org.apache.solr"         % "solr-solrj"               % "7.1.0",
+  "com.squareup.okhttp3"    % "okhttp"                   % "3.9.1",
+  "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1",
+  "org.scalatest"          %% "scalatest"                % "3.0.6-SNAP4" % "test",
+  "org.mockito"             % "mockito-core"             % "2.2.22"      % "test",
+  "commons-logging"         % "commons-logging"          % "1.2"         % "runtime"
 )
 
-libraryDependencies := {
-  CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, scalaMajor)) if scalaMajor >= 11 =>
-      libraryDependencies.value ++ Seq(
-        "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
-      )
-    case _ => libraryDependencies.value
-  }
+publishMavenStyle := true
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (version.value.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
-publishTo := Some(Resolver.ssh("amateras-repo-scp", "shell.sourceforge.jp", "/home/groups/a/am/amateras/htdocs/mvn/") withPermissions("0664")
-  as(System.getProperty("user.name"), new java.io.File(Path.userHome.absolutePath + "/.ssh/id_rsa")))
+scalacOptions := Seq("-deprecation", "-feature")
 
-EclipseKeys.withSource := true
+publishArtifact in Test := false
+
+pomIncludeRepository := { _ => false }
+
+pomExtra := (
+  <url>https://github.com/takezoe/solr-scala-client</url>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <scm>
+    <url>https://github.com/takezoe/solr-scala-client</url>
+    <connection>scm:git:https://github.com/takezoe/solr-scala-client.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>takezoe</id>
+      <name>Naoki Takezoe</name>
+    </developer>
+  </developers>
+)

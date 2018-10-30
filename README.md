@@ -1,23 +1,27 @@
-solr-scala-client <img src="https://travis-ci.org/takezoe/solr-scala-client.svg" data-bindattr-145="145" title="Build Status Images">
+solr-scala-client [![Build Status](https://travis-ci.org/takezoe/solr-scala-client.svg?branch=master)](https://travis-ci.org/takezoe/solr-scala-client) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.takezoe/solr-scala-client_2.12/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.takezoe/solr-scala-client_2.12)
 =================
 
 The simple [Apache Solr](http://lucene.apache.org/solr/) client for Scala.
 This is based on the SolrJ and provides optimal interface for Scala.
 
-This project has been built continuously by [BuildHive](https://buildhive.cloudbees.com/view/My%20Repositories/job/takezoe/job/solr-scala-client/).
-
-Add the following dependency into your build.sbt to use solr-scala-client.
+Add the following dependency into your `build.sbt` to use solr-scala-client.
 
 ```scala
-resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/"
+libraryDependencies += "com.github.takezoe" %% "solr-scala-client" % "0.0.19"
+```
 
-libraryDependencies += "jp.sf.amateras.solr.scala" %% "solr-scala-client" % "0.0.12"
+If you want to test SNAPSHOT version, add the following dependency instead of above:
+
+```scala
+resolvers += "sonatype-oss-snapshot" at "https://oss.sonatype.org/content/repositories/snapshots"
+
+libraryDependencies += "com.github.takezoe" %% "solr-scala-client" % "x.x.x-SNAPSHOT"
 ```
 
 This is a simplest example to show usage of solr-scala-client.
 
 ```scala
-import jp.sf.amateras.solr.scala._
+import com.github.takezoe.solr.scala._
 
 val client = new SolrClient("http://localhost:8983/solr")
 
@@ -140,10 +144,44 @@ client.query("name:%name%")
   }
 ```
 
-See more example at [AsyncSolrClientSample.scala](https://github.com/takezoe/solr-scala-client/blob/master/src/main/scala/jp/sf/amateras/solr/scala/sample/AsyncSolrClientSample.scala).
+See more example at [AsyncSolrClientSample.scala](https://github.com/takezoe/solr-scala-client/blob/master/src/main/scala/com/github/takezoe/solr/scala/sample/AsyncSolrClientSample.scala).
 
 Release Notes
---------
+-------------
+### 0.0.19 - 4 Jun 2018
+
+* Add support for grouping and qTime in the response
+* Allow batch processing with a specific collection
+
+### 0.0.18 - 15 Feb 2018
+
+* Fix response leaking bug
+
+### 0.0.17 - 5 Dec 2017
+
+* Upgrade to SolrJ-7.1.0
+* Switch backend to OkHttp from async-http-client
+* Allow specifying collection name when building query
+* Add implementation of CloudSolrClient with and without authentication
+
+### 0.0.16 - 18 Oct 2017
+
+* Upgrade Scala and async-http-client
+
+### 0.0.15 - 22 Nov 2016
+
+* Scala 2.12 support and library updating
+
+### 0.0.14 - 14 Aug 2016
+
+* Small refactoring
+
+### 0.0.13 - 13 Aug 2016
+
+* Upgrade to SolrJ-6.1.0
+* Change group id and package name to `com.github.takezoe`
+* Publish to the Maven central repository
+
 ### 0.0.12 - 7 Feb 2015
 
 * Add ```QueryBuilderBase#fq()```
